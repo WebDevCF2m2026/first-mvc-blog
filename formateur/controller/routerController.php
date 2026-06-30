@@ -39,7 +39,17 @@ if(isset($_GET['idarticle'])&& ctype_digit($_GET['idarticle']) && $_GET['idartic
  * Détail d'un article
  */
 $article = selectDetailArticle($dbConnect,$id);
-include_once BASE_URL."/view/detail.article.view.html.php"; // view
+
+// si l'article vaut nul
+if($article===null){
+
+    include_once BASE_URL."/view/404.view.html.php";
+
+// l'article a bien été trouvé
+}else{
+
+    include_once BASE_URL."/view/detail.article.view.html.php"; // view
+}
 
 
 }else{ 
