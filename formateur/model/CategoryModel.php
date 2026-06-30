@@ -23,3 +23,9 @@ function selectAllCategoryMenu(PDO $db): array
     // retour du tableau
     return $datas;
 }
+
+/**
+ * Pour le détail d'une catégorie
+ */
+
+//function selectCategoryById(PDO $db, int $id):

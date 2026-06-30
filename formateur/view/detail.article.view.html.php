@@ -52,7 +52,7 @@
 
                         <!-- Post content-->
                         <section class="mb-5">
-                            <p class="fs-5 mb-4 align-content-start flex-wrap"><?=nl2br($article['content']) ?> </p>
+                            <p class="fs-5 mb-4 text-start"><?=nl2br($article['content']) ?> </p>
                         </section>
                     </article>
 

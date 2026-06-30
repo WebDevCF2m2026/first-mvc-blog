@@ -42,7 +42,7 @@ function selectAllArticleHomepage(PDO $db): array
 
 function selectDetailArticle(PDO $db, int $id): ?array 
 {
-    # 
+    # Requête préparée pour récupérer l'article
     $sql="SELECT 
 	a.`id`, a.`title`,a.`date`, a.`content` ,
     u.`id` AS `iduser`, u.`username`,
@@ -57,11 +57,17 @@ function selectDetailArticle(PDO $db, int $id): ?array
 	GROUP BY a.`id` 
 	   
 ;";
+    # Préparation de l'article
     $stmt = $db->prepare($sql);
+    # exécution de la requête préparée via un tableau dans execute()
     $stmt->execute([$id]);
+    # pas de résultats, on envoie null (?array)
     if($stmt->rowCount()===0) return null;
+    # récupération d'une ligne de résultat
     $data = $stmt->fetch();
+    # Bonne pratique
     $stmt->closeCursor();
+    # Retour d'un array
     return $data;
 }
 

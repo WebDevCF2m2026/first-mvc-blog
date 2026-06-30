@@ -82,9 +82,16 @@
                 endif;
                     ?>
                 <?php
+            $jsonArticles = json_encode($articles,JSON_PRETTY_PRINT);   
+             
             var_dump($_GET, $menu,$articles);
                 ?>
             </div>
+            <pre>
+                <?php
+                echo $jsonArticles;
+                ?>
+            </pre>
             
         </div>
         <!-- Bootstrap core JS-->

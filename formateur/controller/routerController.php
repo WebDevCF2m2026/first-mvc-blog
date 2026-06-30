@@ -29,40 +29,59 @@ try{
 // On charge les catégories pour les pages publiques
 $menu = selectAllCategoryMenu($dbConnect); // model
 
+/**
+ * Détail d'une catégorie
+ */
 
-// existance de la variable get idarticle, qui ne peut être que du digit 0123456789 (pas de, ou de -) et qui ne peut pas être 0
-if(isset($_GET['idarticle'])&& ctype_digit($_GET['idarticle']) && $_GET['idarticle']!=0){
-    $id = (int) $_GET['idarticle'];
+// si existance de la variable get idcateg
+if(isset($_GET['idcateg'])
+    && ctype_digit($_GET['idcateg'])
+    && $_GET['idcateg'] !=0
+    ){
 
-   
+    
+
 /**
  * Détail d'un article
  */
-$article = selectDetailArticle($dbConnect,$id);
 
-// si l'article vaut nul
-if($article===null){
+// si existance de la variable get idarticle,  
+    }elseif(isset($_GET['idarticle'])
+    && ctype_digit($_GET['idarticle']) # qui ne peut être que du digit 0123456789 (pas de, ou de -)
+    && $_GET['idarticle']!=0) # et qui ne peut pas être 0
+    {
+    
+    // conversion de l'id en int
+    $id = (int) $_GET['idarticle'];
 
-    include_once BASE_URL."/view/404.view.html.php";
+   
+    // récupération de l'article
+    $article = selectDetailArticle($dbConnect,$id);
 
-// l'article a bien été trouvé
-}else{
+    // si l'article vaut nul
+    if($article===null){
 
-    include_once BASE_URL."/view/detail.article.view.html.php"; // view
-}
+        include_once BASE_URL."/view/404.view.html.php";
 
+    // l'article a bien été trouvé
+    }else{
+
+        include_once BASE_URL."/view/detail.article.view.html.php"; // view
+    }
+
+/**
+ * homepage
+ */
 
 }else{ 
 
 
 
-/**
- * homepage
- */
-// on charge les articles pour la homepage
-// ICI
-$articles = selectAllArticleHomepage($dbConnect);
-include_once BASE_URL."/view/homepage.view.html.php"; // view
+
+    // on charge les articles pour la homepage
+    // ICI
+    $articles = selectAllArticleHomepage($dbConnect);
+    include_once BASE_URL."/view/homepage.view.html.php"; // view
 
 }
 
