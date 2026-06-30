@@ -38,8 +38,23 @@ if(isset($_GET['idcateg'])
     && ctype_digit($_GET['idcateg'])
     && $_GET['idcateg'] !=0
     ){
-
     
+    $id = $_GET['idcateg'];
+    # version longue de (int)
+    settype($id,type:"integer");
+
+    // echo gettype($id);
+
+    // récupération de la catégorie
+    $category = selectCategoryById($dbConnect,$id);
+
+    // si la catégorie vaut null (non trouvée)
+    if($category===null){
+
+        include_once BASE_URL."/view/404.view.html.php";
+    }else{    
+        include_once BASE_URL."/view/category.view.html.php";
+    }
 
 /**
  * Détail d'un article
