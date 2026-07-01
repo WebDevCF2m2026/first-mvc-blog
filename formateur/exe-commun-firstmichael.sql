@@ -183,7 +183,7 @@ SELECT
 	a.`id`, a.`title`,a.`date`, LEFT(a.`content`,250) AS `content` ,
     u.`id` AS `iduser`, u.`username`,
 	-- GROUP_CONCAT(c.`id`) AS `idcateg`, GROUP_CONCAT(c.`title` SEPARATOR '|||') AS `titlecateg`
-	(SELECT GROUP_CONCAT(c.title) FROM category c
+	(SELECT GROUP_CONCAT(c.id, '---', c.title SEPARATOR '|||') FROM category c
 		INNER JOIN category_has_article h
 			ON h.category_id = c.`id`
      	WHERE h.article_id = a.`id`
