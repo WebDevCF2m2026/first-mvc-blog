@@ -175,3 +175,25 @@ SELECT
     LEFT JOIN `category` c ON cha.`category_id`= c.`id` 
 	GROUP BY a.`id` 
 	ORDER BY a.`date` DESC ;
+
+
+# on sélectionne id, title, date et 250 caractères de content de la table article ordonné par date DESC. On prend ensuite en jointure interne id renommé iduser et username de la table user.
+# exercice Je veux récupérer id renommé idcateg (groupé avec la , comme séparateur) et title renommé titlecateg (groupé avec les '|||' comme séparateur) de la table category (jointure externe non obligatoire ! m2m ! (seuls les articles doivent être présent), il faut regrouper les articles pour n'en avoir qu'un article par page
+SELECT 
+	a.`id`, a.`title`,a.`date`, LEFT(a.`content`,250) AS `content` ,
+    u.`id` AS `iduser`, u.`username`,
+	-- GROUP_CONCAT(c.`id`) AS `idcateg`, GROUP_CONCAT(c.`title` SEPARATOR '|||') AS `titlecateg`
+	(SELECT GROUP_CONCAT(c.title) FROM category c
+		INNER JOIN category_has_article h
+			ON h.category_id = c.`id`
+     	WHERE h.article_id = a.`id`
+		GROUP BY a.`id`	
+			) AS categories
+	FROM `article` a
+    INNER JOIN `user` u
+		ON u.`id` = a.`user_id`
+    INNER JOIN `category_has_article` cha
+    	ON cha.`article_id`= a.`id` 
+    WHERE cha.category_id =  1
+    GROUP BY a.`id`
+	ORDER BY a.`date` DESC ;
