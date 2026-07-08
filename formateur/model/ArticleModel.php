@@ -35,6 +35,40 @@ function selectAllArticleHomepage(PDO $db): array
     return $datas;
 }
 
+
+/**
+ * Récupération des derniers articles écris par l'auteur par ordre de date DESC depuis la page auteur
+ * 
+ */
+
+function selectAllArticleByIdUser(PDO $db, int $idUser): array 
+{
+    # on sélectionne id, title, date et 250 caractères de content de la table article publiés ordonnés par date DESC. On prend ensuite en jointure interne id renommé iduser et username de la table user.
+# exercice Je veux récupérer id renommé idcateg (groupé avec la , comme séparateur) et title renommé titlecateg (groupé avec les '|||' comme séparateur) de la table category (jointure externe non obligatoire ! m2m ! (seuls les articles doivent être présent), il faut regrouper les articles pour n'en avoir qu'un article par page
+    $sql="SELECT 
+	a.`id`, a.`title`,a.`date`, SUBSTRING(a.`content`,1,250) AS `content` ,
+    u.`id` AS `iduser`, u.`username`,
+	GROUP_CONCAT(c.`id`) AS `idcateg`, GROUP_CONCAT(c.`title` SEPARATOR '|||') AS `titlecateg`
+	FROM `article` a
+    INNER JOIN `user` u
+		ON u.`id` = a.`user_id`
+    LEFT JOIN `category_has_article` cha
+    	ON cha.`article_id`= a.`id` 
+    LEFT JOIN `category` c ON cha.`category_id`= c.`id` 
+    WHERE a.`published` = 1 AND u.`id` = ?
+	GROUP BY a.`id` 
+	ORDER BY a.`date` DESC ;   
+;";
+    // préparer la requête
+    $stmt = $db->prepare($sql);
+    // exécution en passant un tableau indexé avec l'id de la catégorie
+    $stmt->execute([$idUser]);
+    
+    $datas = $stmt->fetchAll();
+    $stmt->closeCursor();
+    return $datas;
+}
+
 // Sélection des articles se trouvant dans une catégorie
 
 function selectAllArticleByCategoryId(PDO $db, int $idcateg): array 

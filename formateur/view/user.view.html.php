@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Accueil du blog de Pitz Michaël" />
         <meta name="author" content="Pitz Michaël" />
-        <title>Mon Blog | Accueil</title>
+        <title>Mon Blog | <?= $user['username'] ?></title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -21,7 +21,9 @@
         <div class="container">
             <div class="text-center mt-5">
                 <h1>Le blog de Pitz Michaël</h1>
-                <p class="lead">Mon Blog | Accueil</p>
+                <p class="lead">Mon Blog | <?= $user['username'] ?></p>
+                <h2>Nom : <?= $user['realname'] ?></h2>
+    
                 <?php
              if(empty($articles)) :
                 ?>
@@ -70,6 +72,7 @@
                                 endfor;
                             endif;
                             ?>
+                            
                         </header>
 
                         <!-- Post content-->
@@ -82,7 +85,7 @@
                 endif;
                     ?>
                 <?php
-            //$jsonArticles = json_encode($articles,JSON_PRETTY_PRINT);   
+           // $jsonArticles = json_encode($articles,JSON_PRETTY_PRINT);   
              
            // var_dump($_GET, $menu,$articles);
                 ?>

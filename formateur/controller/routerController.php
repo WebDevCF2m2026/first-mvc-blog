@@ -29,12 +29,37 @@ try{
 // On charge les catégories pour les pages publiques
 $menu = selectAllCategoryMenu($dbConnect); // model
 
+
+/**
+ * Détail d'un user
+ */
+
+// si existance de la variable get idcuser
+if(!empty($_GET['iduser'])
+    && ctype_digit($_GET['iduser'])
+    ){
+
+    $iduser = (int) $_GET['iduser'];
+    $user = selectUserById($dbConnect,$iduser);
+
+    // si la catégorie vaut null (non trouvée)
+    if($user===null){
+        
+        // appekle de la vue
+        include_once BASE_URL."/view/404.view.html.php";
+    }else{   
+        // on charge les articles
+        $articles = selectAllArticleByIdUser($dbConnect,$iduser);
+        include_once BASE_URL."/view/user.view.html.php";
+    }
+
+
 /**
  * Détail d'une catégorie
  */
 
 // si existance de la variable get idcateg
-if(isset($_GET['idcateg'])
+    }elseif(isset($_GET['idcateg'])
     && ctype_digit($_GET['idcateg'])
     && $_GET['idcateg'] !=0
     ){
@@ -54,6 +79,7 @@ if(isset($_GET['idcateg'])
 
     // si la catégorie vaut null (non trouvée)
     if($category===null){
+
 
         include_once BASE_URL."/view/404.view.html.php";
     }else{    
