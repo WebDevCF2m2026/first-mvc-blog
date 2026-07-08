@@ -35,6 +35,49 @@ function selectAllArticleHomepage(PDO $db): array
     return $datas;
 }
 
+// Sélection des articles se trouvant dans une catégorie
+
+function selectAllArticleByCategoryId(PDO $db, int $idcateg): array 
+{
+   
+    $sql="SELECT 
+	a.`id`, a.`title`,a.`date`, SUBSTRING(a.`content`,1,300) AS `content` ,
+    u.`id` AS `iduser`, u.`username`,
+    -- création d'une sous-requête pour récupérer les catégories sans être influancé par la catégorie actuelle.
+    (
+     SELECT GROUP_CONCAT(ca.`id` , '---',  ca.`title` SEPARATOR '|||')
+        FROM `category` ca
+        LEFT JOIN `category_has_article` h
+            ON h.`category_id`= ca.`id` 
+        -- LEFT JOIN `article` ar
+            WHERE h.`article_id`= a.`id`    
+        GROUP BY a.`id`      
+            
+    ) as `categ`
+	-- GROUP_CONCAT(c.`id`) AS `idcateg`, GROUP_CONCAT(c.`title` SEPARATOR '|||') AS `titlecateg`
+	FROM `article` a
+    INNER JOIN `user` u
+		ON u.`id` = a.`user_id`
+    -- jointure obligatoire pour trouver les articles de la catégorie
+    INNER JOIN `category_has_article` cha
+    	ON cha.`article_id`= a.`id` 
+    -- LEFT JOIN `category` c ON cha.`category_id`= c.`id` 
+    WHERE a.`published` = 1 AND cha.`category_id` = ?
+	GROUP BY a.`id` 
+	ORDER BY a.`date` DESC ;  
+ 
+
+;";
+    // préparer la requête
+    $stmt = $db->prepare($sql);
+    // exécution en passant un tableau indexé avec l'id de la catégorie
+    $stmt->execute([$idcateg]);
+    
+    $datas = $stmt->fetchAll();
+    $stmt->closeCursor();
+    return $datas;
+}
+
 /**
  * Récupération d'un article par son id si il est publique
  * 

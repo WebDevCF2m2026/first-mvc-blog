@@ -48,6 +48,10 @@ if(isset($_GET['idcateg'])
     // récupération de la catégorie
     $category = selectCategoryById($dbConnect,$id);
 
+    // récupupération des articles
+    $articles = selectAllArticleByCategoryId($dbConnect,$id);
+
+
     // si la catégorie vaut null (non trouvée)
     if($category===null){
 

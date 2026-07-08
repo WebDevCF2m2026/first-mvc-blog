@@ -56,20 +56,20 @@
                             <div class="text-muted fst-italic mb-2"> Ecrit par <a href="?iduser=<?=$item['iduser'] ?>"><?=$item['username'] ?></a> le <?=$item['date'] ?></div>
                             <!-- Post categories-->
                              <?php
-                             if(empty($item['idcateg'])):
+                             if(empty($item['categ'])):
                              ?>
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Pas encore de catégories</a>
                              <?php
                              else:
-                                $idcateg = explode(",",$item['idcateg']);
-                                $tiltecateg = explode("|||",$item['titlecateg']);
-                                $countid = count($idcateg);
-                                for($i=0;$i<$countid;$i++):
-                             ?>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="?idcateg=<?= $idcateg[$i] ?>"><?= $tiltecateg[$i] ?></a>
-
-                            <?php
-                                endfor;
+                                //var_dump($item['categ']);
+                                $categ = explode("|||",$item['categ']);
+                                foreach($categ as $cat):
+                                    $tiltecateg = explode("---",$cat);
+                                    ?>
+                                    <a class="badge bg-secondary text-decoration-none link-light" href="?idcateg=<?= $tiltecateg[0] ?>"><?= $tiltecateg[1] ?></a>
+                                    <?php
+                                endforeach;
+  
                             endif;
                             ?>
                         </header>
@@ -84,14 +84,14 @@
                 endif;
                     ?>
                 <?php
-            $jsonArticles = json_encode($articles,JSON_PRETTY_PRINT);   
+           // $jsonArticles = json_encode($articles,JSON_PRETTY_PRINT);   
              
-            var_dump($_GET, $menu,$articles);
+           // var_dump($_GET, $menu,$articles);
                 ?>
             </div>
             <pre>
                 <?php
-                echo $jsonArticles;
+               // echo $jsonArticles;
                 ?>
             </pre>
             
